@@ -5030,23 +5030,24 @@
         <rect width="100%" height="100%" fill="url(#grid)" />
 
         <!-- Boundaries (behind everything) -->
-        <rect data-graph-role="structural-frame" data-composition-frame-kind="security-group" data-composition-frame-id="0" data-composition-frame-label="社内 LAN（Wi-Fi 192.168.160.x）" x="0" y="270" width="210" height="110" rx="8" class="c-security-group" stroke-width="1"/>
+        <rect data-graph-role="structural-frame" data-composition-frame-kind="security-group" data-composition-frame-id="0" data-composition-frame-label="chat ホスト（社内 LAN）" x="0" y="270" width="210" height="110" rx="8" class="c-security-group" stroke-width="1"/>
 
         <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="1" data-composition-frame-label="spark1（spark-a4bb）ヘッド 192.168.160.37" x="220" y="110" width="630" height="440" rx="12" class="c-region" stroke-width="1"/>
 
         <rect data-graph-role="structural-frame" data-composition-frame-kind="region" data-composition-frame-id="2" data-composition-frame-label="spark2（spark-af6b）ワーカー 192.168.160.21" x="1063.8948258096775" y="110" width="242.21034838064517" height="270" rx="12" class="c-region" stroke-width="1"/>
 
         <!-- Connection paths (before components for correct z-order) -->
-        <path data-edge-from="client" data-edge-to="api" data-edge-label="HTTP :8888 認証なし" data-edge-key="0" data-edge-id="client-api" data-composition-points="180,330;250,330" d="M 180 330 L 250 330" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="api" data-edge-to="engine" data-edge-key="1" data-edge-id="api-engine" data-composition-points="400,330;460,330" d="M 400 330 L 460 330" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="engine" data-edge-to="tp0" data-edge-key="2" data-edge-id="engine-tp0" data-composition-points="610,330;670,330" d="M 610 330 L 670 330" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="tp0" data-edge-to="cx7" data-edge-label="NCCL" data-edge-key="3" data-edge-id="tp0-cx7" data-composition-points="820,330;890,330" d="M 820 330 L 890 330" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="cx7" data-edge-to="tp1" data-edge-label="RoCE 2 系統" data-edge-key="4" data-edge-id="cx7-tp1" data-composition-points="1040,323;1110,323" d="M 1040 323 L 1110 323" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
-        <path data-edge-from="launcher" data-edge-to="tp1" data-edge-label="ssh / scp：同期、起動、停止" data-edge-key="5" data-edge-id="launcher-tp1" data-composition-points="610,500;1086,500;1086,337;1110,337" d="M 610 500 L 1078 500 Q 1086 500 1086 492 L 1086 345 Q 1086 337 1094 337 L 1110 337" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="tp1" data-edge-to="engine" data-edge-label="tcp :25000 初期化" data-edge-key="6" data-edge-id="tp1-engine" data-composition-points="1185,300;1185,250;535,250;535,300" d="M 1185 300 L 1185 258 Q 1185 250 1177 250 L 543 250 Q 535 250 535 258 L 535 300" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
-        <path data-edge-from="hf" data-edge-to="cache1" data-edge-key="7" data-edge-id="hf-cache1" data-composition-points="885,170;820,170" d="M 885 170 L 820 170" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="hf" data-edge-to="cache2" data-edge-key="8" data-edge-id="hf-cache2" data-composition-points="1045,170;1110,170" d="M 1045 170 L 1110 170" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
-        <path data-edge-from="ghcr" data-edge-to="api" data-edge-label="docker pull" data-edge-key="9" data-edge-id="ghcr-api" data-composition-points="180,170;325,170;325,300" d="M 180 170 L 317 170 Q 325 170 325 178 L 325 300" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="client" data-edge-to="owui" data-edge-label="HTTPS（ngrok）/ HTTP" data-edge-key="0" data-edge-id="client-owui" data-composition-points="105,470;105,360" d="M 105 470 L 105 360" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="owui" data-edge-to="api" data-edge-label="HTTP :8888" data-edge-key="1" data-edge-id="owui-api" data-composition-points="180,330;250,330" d="M 180 330 L 250 330" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="api" data-edge-to="engine" data-edge-key="2" data-edge-id="api-engine" data-composition-points="400,330;460,330" d="M 400 330 L 460 330" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="engine" data-edge-to="tp0" data-edge-key="3" data-edge-id="engine-tp0" data-composition-points="610,330;670,330" d="M 610 330 L 670 330" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="tp0" data-edge-to="cx7" data-edge-label="NCCL" data-edge-key="4" data-edge-id="tp0-cx7" data-composition-points="820,330;890,330" d="M 820 330 L 890 330" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="cx7" data-edge-to="tp1" data-edge-label="RoCE 2 系統" data-edge-key="5" data-edge-id="cx7-tp1" data-composition-points="1040,323;1110,323" d="M 1040 323 L 1110 323" class="a-emphasis" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
+        <path data-edge-from="launcher" data-edge-to="tp1" data-edge-label="ssh / scp：同期、起動、停止" data-edge-key="6" data-edge-id="launcher-tp1" data-composition-points="610,500;1086,500;1086,337;1110,337" d="M 610 500 L 1078 500 Q 1086 500 1086 492 L 1086 345 Q 1086 337 1094 337 L 1110 337" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="tp1" data-edge-to="engine" data-edge-label="tcp :25000 初期化" data-edge-key="7" data-edge-id="tp1-engine" data-composition-points="1185,300;1185,250;535,250;535,300" d="M 1185 300 L 1185 258 Q 1185 250 1177 250 L 543 250 Q 535 250 535 258 L 535 300" class="a-default" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <path data-edge-from="hf" data-edge-to="cache1" data-edge-key="8" data-edge-id="hf-cache1" data-composition-points="885,170;820,170" d="M 885 170 L 820 170" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="hf" data-edge-to="cache2" data-edge-key="9" data-edge-id="hf-cache2" data-composition-points="1045,170;1110,170" d="M 1045 170 L 1110 170" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
+        <path data-edge-from="ghcr" data-edge-to="api" data-edge-label="docker pull" data-edge-key="10" data-edge-id="ghcr-api" data-composition-points="180,170;325,170;325,300" d="M 180 170 L 317 170 Q 325 170 325 178 L 325 300" class="a-dashed" stroke-width="1.5" marker-end="url(#arrowhead-dashed)"/>
 
         <!-- Components -->
         <g id="node-ghcr" data-node-id="ghcr" data-node-label="ghcr.io" tabindex="0" role="button" aria-label="Focus ghcr.io, イメージ（初回のみ）, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="イメージ（初回のみ）" data-node-context="Architecture component">
@@ -5061,16 +5062,30 @@
         <text data-detail="context" x="105" y="184" class="t-muted" font-size="9" text-anchor="middle">イメージ（初回のみ）</text>
         </g>
 
-        <g id="node-client" data-node-id="client" data-node-label="デスクトップ" tabindex="0" role="button" aria-label="Focus デスクトップ, curl / OpenCode, 社内 LAN（Wi-Fi 192.168.160.x）" aria-pressed="false" data-node-kind="external" data-node-sublabel="curl / OpenCode" data-node-context="社内 LAN（Wi-Fi 192.168.160.x）">
-          <title>デスクトップ · curl / OpenCode · 社内 LAN（Wi-Fi 192.168.160.x）</title>
-          <rect x="30" y="300" width="150" height="60" rx="6" class="c-mask"/>
-          <rect x="30" y="300" width="150" height="60" rx="6" class="c-external" stroke-width="1.5"/>
-          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(36 306) scale(0.6875)">
+        <g id="node-client" data-node-id="client" data-node-label="利用者のブラウザ" tabindex="0" role="button" aria-label="Focus 利用者のブラウザ, 社内 LAN / 社外（ngrok）, Architecture component" aria-pressed="false" data-node-kind="external" data-node-sublabel="社内 LAN / 社外（ngrok）" data-node-context="Architecture component">
+          <title>利用者のブラウザ · 社内 LAN / 社外（ngrok） · Architecture component</title>
+          <rect x="30" y="470" width="150" height="60" rx="6" class="c-mask"/>
+          <rect x="30" y="470" width="150" height="60" rx="6" class="c-external" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="external" class="semantic-sigil s-external" transform="translate(36 476) scale(0.6875)">
             <rect x="2.5" y="5" width="8.5" height="8" rx="1.5"/>
             <path d="M8 2.5h5.5V8M13.5 2.5 7.5 8.5"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="105" y="328" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">デスクトップ</text>
-        <text data-detail="context" x="105" y="344" class="t-muted" font-size="9" text-anchor="middle">curl / OpenCode</text>
+          <text data-node-label="" data-detail-anchor="" x="105" y="498" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">利用者のブラウザ</text>
+        <text data-detail="context" x="105" y="514" class="t-muted" font-size="9" text-anchor="middle">社内 LAN / 社外（ngrok）</text>
+        </g>
+
+        <g id="node-owui" data-node-id="owui" data-node-label="Open WebUI" tabindex="0" role="button" aria-label="Focus Open WebUI, 認証 / 履歴（SQLite）, chat ホスト（社内 LAN）" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="認証 / 履歴（SQLite）" data-node-context="chat ホスト（社内 LAN）">
+          <title>Open WebUI · 認証 / 履歴（SQLite） · chat ホスト（社内 LAN）</title>
+          <rect x="30" y="300" width="150" height="60" rx="6" class="c-mask"/>
+          <rect x="30" y="300" width="150" height="60" rx="6" class="c-frontend" stroke-width="1.5"/>
+          <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(36 306) scale(0.6875)">
+            <rect x="2" y="3" width="12" height="10" rx="2"/>
+            <path d="M2 6.5h12"/>
+            <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
+            <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
+          </g>
+          <text data-node-label="" data-detail-anchor="" x="105" y="328" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Open WebUI</text>
+        <text data-detail="context" x="105" y="344" class="t-muted" font-size="9" text-anchor="middle">認証 / 履歴（SQLite）</text>
         </g>
 
         <g id="node-api" data-node-id="api" data-node-label="APIServer" tabindex="0" role="button" aria-label="Focus APIServer, :8888 OpenAI 互換, spark1（spark-a4bb）ヘッド 192.168.160.37" aria-pressed="false" data-node-kind="backend" data-node-sublabel=":8888 OpenAI 互換" data-node-context="spark1（spark-a4bb）ヘッド 192.168.160.37">
@@ -5183,39 +5198,43 @@
         </g>
 
         <!-- Connection labels -->
-        <g data-detail="context" data-edge-from="client" data-edge-to="api" data-edge-label="HTTP :8888 認証なし" data-edge-key="0" data-edge-id="client-api">
-          <rect x="164.4" y="364" width="101.2" height="14" rx="3" class="c-mask"/>
-          <text x="215" y="374" class="t-backend" font-size="8" text-anchor="middle">HTTP :8888 認証なし</text>
+        <g data-detail="context" data-edge-from="client" data-edge-to="owui" data-edge-label="HTTPS（ngrok）/ HTTP" data-edge-key="0" data-edge-id="client-owui">
+          <rect x="52" y="450" width="106" height="14" rx="3" class="c-mask"/>
+          <text x="105" y="460" class="t-backend" font-size="8" text-anchor="middle">HTTPS（ngrok）/ HTTP</text>
+        </g>
+        <g data-detail="context" data-edge-from="owui" data-edge-to="api" data-edge-label="HTTP :8888" data-edge-key="1" data-edge-id="owui-api">
+          <rect x="186" y="310" width="58" height="14" rx="3" class="c-mask"/>
+          <text x="215" y="320" class="t-backend" font-size="8" text-anchor="middle">HTTP :8888</text>
         </g>
 
 
-        <g data-detail="context" data-edge-from="tp0" data-edge-to="cx7" data-edge-label="NCCL" data-edge-key="3" data-edge-id="tp0-cx7">
+        <g data-detail="context" data-edge-from="tp0" data-edge-to="cx7" data-edge-label="NCCL" data-edge-key="4" data-edge-id="tp0-cx7">
           <rect x="840" y="310" width="30" height="14" rx="3" class="c-mask"/>
           <text x="855" y="320" class="t-backend" font-size="8" text-anchor="middle">NCCL</text>
         </g>
-        <g data-detail="context" data-edge-from="cx7" data-edge-to="tp1" data-edge-label="RoCE 2 系統" data-edge-key="4" data-edge-id="cx7-tp1">
+        <g data-detail="context" data-edge-from="cx7" data-edge-to="tp1" data-edge-label="RoCE 2 系統" data-edge-key="5" data-edge-id="cx7-tp1">
           <rect x="1043.6" y="303" width="62.8" height="14" rx="3" class="c-mask"/>
           <text x="1075" y="313" class="t-backend" font-size="8" text-anchor="middle">RoCE 2 系統</text>
         </g>
-        <g data-detail="context" data-edge-from="launcher" data-edge-to="tp1" data-edge-label="ssh / scp：同期、起動、停止" data-edge-key="5" data-edge-id="launcher-tp1">
+        <g data-detail="context" data-edge-from="launcher" data-edge-to="tp1" data-edge-label="ssh / scp：同期、起動、停止" data-edge-key="6" data-edge-id="launcher-tp1">
           <rect x="1016.2" y="398.5" width="139.6" height="14" rx="3" class="c-mask"/>
           <text x="1086" y="408.5" class="t-messagebus" font-size="8" text-anchor="middle">ssh / scp：同期、起動、停止</text>
         </g>
-        <g data-detail="context" data-edge-from="tp1" data-edge-to="engine" data-edge-label="tcp :25000 初期化" data-edge-key="6" data-edge-id="tp1-engine">
+        <g data-detail="context" data-edge-from="tp1" data-edge-to="engine" data-edge-label="tcp :25000 初期化" data-edge-key="7" data-edge-id="tp1-engine">
           <rect x="814.2" y="230" width="91.6" height="14" rx="3" class="c-mask"/>
           <text x="860" y="240" class="t-muted" font-size="8" text-anchor="middle">tcp :25000 初期化</text>
         </g>
 
 
-        <g data-detail="context" data-edge-from="ghcr" data-edge-to="api" data-edge-label="docker pull" data-edge-key="9" data-edge-id="ghcr-api">
+        <g data-detail="context" data-edge-from="ghcr" data-edge-to="api" data-edge-label="docker pull" data-edge-key="10" data-edge-id="ghcr-api">
           <rect x="293.6" y="215" width="62.8" height="14" rx="3" class="c-mask"/>
           <text x="325" y="225" class="t-messagebus" font-size="8" text-anchor="middle">docker pull</text>
         </g>
 
         <!-- Boundary labels (foreground masks keep routes out of titles) -->
-        <g data-graph-role="structural-frame-label" data-composition-frame-id="0" data-composition-frame-kind="security-group" data-composition-frame-label="社内 LAN（Wi-Fi 192.168.160.x）">
-          <rect data-graph-role="structural-frame-label-mask" x="4" y="280" width="177.4" height="16" rx="3" class="c-mask"/>
-          <text data-boundary-label="" x="8" y="293" class="t-security" font-size="9" font-weight="600">社内 LAN（Wi-Fi 192.168.160.x）</text>
+        <g data-graph-role="structural-frame-label" data-composition-frame-id="0" data-composition-frame-kind="security-group" data-composition-frame-label="chat ホスト（社内 LAN）">
+          <rect data-graph-role="structural-frame-label-mask" x="4" y="280" width="134.2" height="16" rx="3" class="c-mask"/>
+          <text data-boundary-label="" x="8" y="293" class="t-security" font-size="9" font-weight="600">chat ホスト（社内 LAN）</text>
         </g>
 
         <g data-graph-role="structural-frame-label" data-composition-frame-id="1" data-composition-frame-kind="region" data-composition-frame-label="spark1（spark-a4bb）ヘッド 192.168.160.37">
@@ -5444,8 +5463,8 @@
           <h3>推論 API</h3>
         </div>
         <ul>
-          <li>&bull; 社内 LAN から http://192.168.160.37:8888 に直接アクセスする</li>
-          <li>&bull; VLLM_HOST=0.0.0.0 で待ち受け、API キーは未設定</li>
+          <li>&bull; 利用者は Open WebUI にログインして使う。社外からは ngrok 経由</li>
+          <li>&bull; Open WebUI が spark1 の :8888（認証なし）に接続する</li>
         </ul>
       </div>
 
