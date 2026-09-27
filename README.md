@@ -18,10 +18,11 @@ NVIDIA DGX Spark 2 台を ConnectX-7 で直結し、[DeepSeek-V4-Flash-Vision-Ex
 - **ランタイム**：`ghcr.io/anemll/dspark-vllm-gx10:0.1.1`（vLLM `0.25.2.dev0+g752a3a504`、NCCL 2.30.7）
 - **モデル**：`deepseek-ai/DeepSeek-V4-Flash-Vision-Exp` @ `86f746b36186f0e567729a5c06a8c918caba82a9`
 
-図は HTML ファイルなので、ダウンロードしてブラウザで開く。
+![システム構成図](diagrams/system-architecture.png)
 
-- [システム構成図](diagrams/system-architecture.html)
-- [API リクエストの流れ図](diagrams/api-request-flow.html)
+API リクエストが処理される流れは「[LLM の構築](docs/04-llm-deploy.md#リクエストが処理される流れ)」に図で示した。
+図は拡大や検索ができる HTML 版（[構成図](diagrams/system-architecture.html)、[流れ図](diagrams/api-request-flow.html)）もある。
+HTML 版は GitHub 上では表示されないので、ダウンロードしてブラウザで開く。
 
 ## 結果の要約
 

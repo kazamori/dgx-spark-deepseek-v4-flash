@@ -1,7 +1,8 @@
 # 2. ノード間ネットワーク（ConnectX-7）
 
 2 台を QSFP ケーブル 1 本で直結し、ConnectX-7（以下 CX-7）のリンクに IP を割り当てて、RDMA の帯域を確認する。
-構成の全体は [システム構成図](../diagrams/system-architecture.html) を参照する。
+
+![システム構成図](../diagrams/system-architecture.png)
 
 ## 構成
 

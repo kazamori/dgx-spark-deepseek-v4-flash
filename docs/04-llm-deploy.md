@@ -325,8 +325,10 @@ real    0m23.210s
 
 ### リクエストが処理される流れ
 
-リクエストが処理される流れは [API リクエストの流れ図](../diagrams/api-request-flow.html) に示した。
+別のマシンから `POST /v1/chat/completions` を送ったときの流れを図に示す。
 プロセス名は起動ログに出る名前である。
+
+![API リクエストの流れ図](../diagrams/api-request-flow.png)
 
 1. spark1 の `APIServer` がリクエストを受け、`EngineCore` に渡す。
 2. `EngineCore` がスケジューリングと KV キャッシュの割り当てを行い、spark1 の `Worker_TP0` と spark2 の `Worker_TP1` に計算を指示する。

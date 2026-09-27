@@ -66,16 +66,14 @@
       "to": "api",
       "y": 190,
       "label": "POST /v1/chat/completions",
-      "variant": "emphasis",
-      "note": "社内 LAN から http://192.168.160.37:8888 に送る。model: deepseek-v4-flash-vision-exp"
+      "variant": "emphasis"
     },
     {
       "id": "submit",
       "from": "api",
       "to": "engine",
       "y": 230,
-      "label": "リクエスト投入",
-      "note": "EngineCore がスケジューリングし、KV キャッシュ（2,432,425 tokens）を割り当てる"
+      "label": "リクエスト投入"
     },
     {
       "id": "step-tp0",
@@ -97,8 +95,7 @@
       "to": "tp1",
       "y": 342,
       "label": "NCCL all_reduce（RoCE）",
-      "variant": "emphasis",
-      "note": "各層の計算結果を CX-7 直結の 2 系統で交換する。decode では DSpark の投機的デコードで 6 トークンを提案して検証する"
+      "variant": "emphasis"
     },
     {
       "id": "tokens",
@@ -122,8 +119,7 @@
       "to": "client",
       "y": 462,
       "label": "200 OK（JSON）",
-      "variant": "return",
-      "note": "choices[0].message.content、finish_reason、usage を返す。実測は 956 トークンで約 23 秒（spark1 上から 127.0.0.1:8888 に送った非ストリーミングの 1 回）"
+      "variant": "return"
     }
   ],
   "activations": [
