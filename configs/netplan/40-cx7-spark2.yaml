@@ -1,0 +1,12 @@
+# spark2（spark-af6b）の CX-7 設定。/etc/netplan/40-cx7.yaml に置き、chmod 600 にする。
+network:
+  version: 2
+  ethernets:
+    enp1s0f0np0:
+      addresses: [192.168.100.11/24]
+      dhcp4: no
+      mtu: 9000
+    enP2p1s0f0np0:
+      addresses: [192.168.101.11/24]
+      dhcp4: no
+      mtu: 9000

@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "chat completions リクエストの流れ",
+    "quality_profile": "showcase",
+    "viewBox": [
+      1080,
+      600
+    ],
+    "column_fit": "spread"
+  },
+  "participants": [
+    {
+      "id": "client",
+      "type": "external",
+      "label": "クライアント",
+      "sublabel": "社内 LAN"
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "APIServer",
+      "sublabel": "spark1 :8888"
+    },
+    {
+      "id": "engine",
+      "type": "backend",
+      "label": "EngineCore",
+      "sublabel": "spark1"
+    },
+    {
+      "id": "tp0",
+      "type": "backend",
+      "label": "Worker_TP0",
+      "sublabel": "spark1 GB10"
+    },
+    {
+      "id": "tp1",
+      "type": "backend",
+      "label": "Worker_TP1",
+      "sublabel": "spark2 GB10"
+    }
+  ],
+  "segments": [
+    {
+      "from": 165,
+      "to": 245,
+      "label": "受付"
+    },
+    {
+      "from": 255,
+      "to": 395,
+      "label": "推論（prefill の後、decode を繰り返す）"
+    },
+    {
+      "from": 405,
+      "to": 480,
+      "label": "応答"
+    }
+  ],
+  "messages": [
+    {
+      "id": "post-chat",
+      "from": "client",
+      "to": "api",
+      "y": 190,
+      "label": "POST /v1/chat/completions",
+      "variant": "emphasis",
+      "note": "社内 LAN から http://192.168.160.37:8888 に送る。model: deepseek-v4-flash-vision-exp"
+    },
+    {
+      "id": "submit",
+      "from": "api",
+      "to": "engine",
+      "y": 230,
+      "label": "リクエスト投入",
+      "note": "EngineCore がスケジューリングし、KV キャッシュ（2,432,425 tokens）を割り当てる"
+    },
+    {
+      "id": "step-tp0",
+      "from": "engine",
+      "to": "tp0",
+      "y": 270,
+      "label": "forward 指示"
+    },
+    {
+      "id": "step-tp1",
+      "from": "engine",
+      "to": "tp1",
+      "y": 305,
+      "label": "forward 指示（mq 192.168.100.10）"
+    },
+    {
+      "id": "allreduce",
+      "from": "tp0",
+      "to": "tp1",
+      "y": 342,
+      "label": "NCCL all_reduce（RoCE）",
+      "variant": "emphasis",
+      "note": "各層の計算結果を CX-7 直結の 2 系統で交換する。decode では DSpark の投機的デコードで 6 トークンを提案して検証する"
+    },
+    {
+      "id": "tokens",
+      "from": "tp0",
+      "to": "engine",
+      "y": 380,
+      "label": "生成トークン",
+      "variant": "return"
+    },
+    {
+      "id": "finish",
+      "from": "engine",
+      "to": "api",
+      "y": 425,
+      "label": "finish_reason: stop",
+      "variant": "return"
+    },
+    {
+      "id": "response",
+      "from": "api",
+      "to": "client",
+      "y": 462,
+      "label": "200 OK（JSON）",
+      "variant": "return",
+      "note": "choices[0].message.content、finish_reason、usage を返す。実測は 956 トークンで約 23 秒（spark1 上から 127.0.0.1:8888 に送った非ストリーミングの 1 回）"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "api",
+      "from": 190,
+      "to": 468,
+      "type": "backend"
+    },
+    {
+      "participant": "engine",
+      "from": 230,
+      "to": 431,
+      "type": "backend"
+    },
+    {
+      "participant": "tp0",
+      "from": 270,
+      "to": 386,
+      "type": "backend"
+    },
+    {
+      "participant": "tp1",
+      "from": 305,
+      "to": 348,
+      "type": "backend"
+    }
+  ]
+}

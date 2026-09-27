@@ -1,0 +1,6 @@
+# ~/.ssh/config（両機に同じ内容を置く）
+# CX-7 側の IP でノード間を接続する。
+Host spark1
+  HostName 192.168.100.10
+Host spark2
+  HostName 192.168.100.11

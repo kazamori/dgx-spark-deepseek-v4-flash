@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "DGX Spark 2 台のローカル LLM 構成",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "ghcr",
+      "type": "external",
+      "label": "ghcr.io",
+      "sublabel": "イメージ（初回のみ）",
+      "pos": [
+        30,
+        140
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "client",
+      "type": "external",
+      "label": "デスクトップ",
+      "sublabel": "curl / OpenCode",
+      "pos": [
+        30,
+        300
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "APIServer",
+      "sublabel": ":8888 OpenAI 互換",
+      "pos": [
+        250,
+        300
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "engine",
+      "type": "backend",
+      "label": "EngineCore",
+      "sublabel": "スケジューラ / KV",
+      "pos": [
+        460,
+        300
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "cache1",
+      "type": "database",
+      "label": "HF キャッシュ",
+      "sublabel": "重み 157GiB",
+      "pos": [
+        670,
+        140
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "tp0",
+      "type": "backend",
+      "label": "Worker_TP0",
+      "sublabel": "GB10 GPU",
+      "pos": [
+        670,
+        300
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "launcher",
+      "type": "frontend",
+      "label": "起動スクリプト",
+      "sublabel": "start / stop / status",
+      "pos": [
+        460,
+        470
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "hf",
+      "type": "external",
+      "label": "Hugging Face Hub",
+      "sublabel": "重み（初回のみ）",
+      "pos": [
+        885,
+        140
+      ],
+      "size": [
+        160,
+        60
+      ]
+    },
+    {
+      "id": "cx7",
+      "type": "messagebus",
+      "label": "CX-7 直結",
+      "sublabel": "QSFP 1 本 / 200Gb/s",
+      "pos": [
+        890,
+        300
+      ],
+      "size": [
+        150,
+        60
+      ],
+      "tag": "MTU 9000"
+    },
+    {
+      "id": "tp1",
+      "type": "backend",
+      "label": "Worker_TP1",
+      "sublabel": "GB10 GPU",
+      "pos": [
+        1110,
+        300
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "cache2",
+      "type": "database",
+      "label": "HF キャッシュ",
+      "sublabel": "重み 157GiB",
+      "pos": [
+        1110,
+        140
+      ],
+      "size": [
+        150,
+        60
+      ]
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "security-group",
+      "label": "社内 LAN（Wi-Fi 192.168.160.x）",
+      "wraps": [
+        "client"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "spark1（spark-a4bb）ヘッド 192.168.160.37",
+      "wraps": [
+        "api",
+        "engine",
+        "tp0",
+        "cache1",
+        "launcher"
+      ]
+    },
+    {
+      "kind": "region",
+      "label": "spark2（spark-af6b）ワーカー 192.168.160.21",
+      "wraps": [
+        "tp1",
+        "cache2"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "client-api",
+      "from": "client",
+      "to": "api",
+      "label": "HTTP :8888 認証なし",
+      "variant": "emphasis",
+      "labelAt": [
+        215,
+        374
+      ]
+    },
+    {
+      "id": "api-engine",
+      "from": "api",
+      "to": "engine"
+    },
+    {
+      "id": "engine-tp0",
+      "from": "engine",
+      "to": "tp0"
+    },
+    {
+      "id": "tp0-cx7",
+      "from": "tp0",
+      "to": "cx7",
+      "label": "NCCL",
+      "variant": "emphasis"
+    },
+    {
+      "id": "cx7-tp1",
+      "from": "cx7",
+      "to": "tp1",
+      "label": "RoCE 2 系統",
+      "variant": "emphasis"
+    },
+    {
+      "id": "launcher-tp1",
+      "from": "launcher",
+      "to": "tp1",
+      "label": "ssh / scp：同期、起動、停止",
+      "variant": "dashed"
+    },
+    {
+      "id": "tp1-engine",
+      "from": "tp1",
+      "to": "engine",
+      "label": "tcp :25000 初期化",
+      "fromSide": "top",
+      "toSide": "top",
+      "via": [
+        [
+          1185,
+          250
+        ],
+        [
+          535,
+          250
+        ]
+      ]
+    },
+    {
+      "id": "hf-cache1",
+      "from": "hf",
+      "to": "cache1",
+      "variant": "dashed"
+    },
+    {
+      "id": "hf-cache2",
+      "from": "hf",
+      "to": "cache2",
+      "variant": "dashed"
+    },
+    {
+      "id": "ghcr-api",
+      "from": "ghcr",
+      "to": "api",
+      "label": "docker pull",
+      "variant": "dashed",
+      "fromSide": "right",
+      "toSide": "top"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "推論 API",
+      "items": [
+        "社内 LAN から http://192.168.160.37:8888 に直接アクセスする",
+        "VLLM_HOST=0.0.0.0 で待ち受け、API キーは未設定"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "テンソル並列（TP=2）",
+      "items": [
+        "spark1 の Worker_TP0 と spark2 の Worker_TP1 が 1 GPU ずつ担当する",
+        "CX-7 は rocep1s0f0（192.168.100.x）と roceP2p1s0f0（192.168.101.x）の 2 系統"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "初回の準備",
+      "items": [
+        "イメージと重みは両機がそれぞれ取得する",
+        "推論時は HF_HUB_OFFLINE=1 で外部に接続しない"
+      ]
+    }
+  ]
+}
