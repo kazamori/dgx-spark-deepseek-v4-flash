@@ -27,7 +27,7 @@ spark1 の統合メモリを vLLM と取り合わないようにするためで�
 
 - Docker と Docker Compose が使える。
 - chat ホストから spark1 の API（`http://192.168.160.37:8888/v1`）に届く。
-- 初回起動時に、文書検索用の埋め込みモデルを Hugging Face から取得するので、インターネットに出られる。
+- インターネットに出られる。初回起動時に文書検索用の埋め込みモデルを Hugging Face から取得し、Web 検索では検索サービスと各サイトにアクセスする。
 
 ## 初回の起動
 
@@ -69,6 +69,13 @@ ngrok で公開する前に、管理者アカウントを作っておく。
 - `ENABLE_ADMIN_CHAT_ACCESS`（管理者が利用者の会話を閲覧できるか。`false` にしている）
 - `BYPASS_MODEL_ACCESS_CONTROL`（すべての利用者にモデルを公開するか。`true` にしている）
 - `OPEN_WEBUI_BIND`、`OPEN_WEBUI_PORT`
+
+## Web 検索の検索エンジン
+
+既定は API キーが要らない DuckDuckGo である。
+ほかの検索エンジンを使うときは、初回起動の前なら `.env` の `WEB_SEARCH_ENGINE` と API キーの欄（`BRAVE_SEARCH_API_KEY`、`TAVILY_API_KEY` など）を設定する。
+初回起動後は、管理画面（Admin Panel の Settings、Web Search）で変更する。
+API キーは `.env` か管理画面にだけ置き、リポジトリには書かない。
 
 ## 停止と再起動
 

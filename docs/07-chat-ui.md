@@ -35,6 +35,41 @@ Open WebUI は、会話のたびにタイトルやタグなどを LLM で生成�
 | `ENABLE_TAGS_GENERATION`、`ENABLE_FOLLOW_UP_GENERATION`、`ENABLE_AUTOCOMPLETE_GENERATION` | `false` |
 | `ENABLE_SEARCH_QUERY_GENERATION`、`ENABLE_RETRIEVAL_QUERY_GENERATION` | `false` |
 
+## Web 検索
+
+チャットから Web 検索を使えるようにした。
+既定の検索エンジンは、API キーが要らない DuckDuckGo である。
+ほかの検索エンジン（Brave、Tavily、Serper、Google PSE、SearXNG など）を使う場合は、`.env` の `WEB_SEARCH_ENGINE` を変え、対応する API キーを設定する（初回起動後は管理画面の Web Search で変更する）。
+
+| 設定 | 値 | 理由 |
+|---|---|---|
+| `ENABLE_WEB_SEARCH` | `true` | Web 検索を使えるようにする |
+| `WEB_SEARCH_ENGINE` | `duckduckgo` | API キーが要らない |
+| `WEB_SEARCH_RESULT_COUNT` | `3` | 入力トークンを増やしすぎない |
+| `BYPASS_WEB_SEARCH_WEB_LOADER` | `true` | 検索結果のページを取得せず、要約文だけを使う（下の測定結果を参照） |
+
+利用者が入力欄で Web 検索をオンにすると、モデルに検索ツール（`search_web`）とページ取得ツール（`fetch_url`）が渡される。
+Open WebUI `v0.11.4` の既定（ネイティブのツール呼び出し）では、検索するか、どのページを読むかをモデル自身が判断する。
+spark1 の vLLM はツール呼び出しを有効にして起動しているので（`--enable-auto-tool-choice --tool-call-parser deepseek_v4`）、この方式がそのまま動く。
+
+検索エンジンの選択にあたり、検索結果の処理方法ごとに、検索 1 回（DuckDuckGo、結果 3 件）にかかる時間を測った。
+
+| 処理方法 | 所要時間（4 回） |
+|---|---|
+| 要約文だけを使う（`BYPASS_WEB_SEARCH_WEB_LOADER=true`） | 1.9〜4.3 秒 |
+| ページを取得し、そのまま使う | 2.1〜5.0 秒 |
+| ページを取得し、埋め込みで絞り込む（Open WebUI の既定） | 3.6〜7.3 秒、1 回は 303 秒 |
+
+所要時間の大半は DuckDuckGo の検索である。
+ページを取得する方式では、応答の遅いサイトに当たると大きく待たされることがある `[推定]`。
+そのため要約文だけを使う設定にし、ページの本文が必要なときはモデルが `fetch_url` で読む形にした。
+
+実際に「Open WebUI の最新リリースのバージョン番号を Web で調べて教えて」と送ると、モデルは `search_web` で検索し、`fetch_url` で GitHub のリリースページを読んで、「v0.11.4」と出典付きで答えた。
+LLM の呼び出し 3 回とツールの実行 2 回を含めて、約 28 秒かかった。
+
+Web 検索を使うと、利用者の質問が検索語として外部の検索サービスに送られる。
+また、検索とページの取得のたびに LLM の呼び出しが増え、spark1 の同時実行数の枠を使う。
+
 ## 認証と公開範囲
 
 - **アカウント**：自分での登録を無効にし（`ENABLE_SIGNUP=false`）、管理者がアカウントを作る。最初の 1 つだけは登録でき、管理者になる。
@@ -55,7 +90,8 @@ Open WebUI `v0.11.4` を、chat ホストで動かす前に作業用のマシン
 | 5 | 履歴の保持 | コンテナを作り直しても、会話履歴とログインのセッションが残る | ✅ |
 | 6 | 同時実行数 | 8 本を同時に送ると、vLLM の処理中は最大 6 本、待ちは最大 2 本。8 本とも HTTP 200 で応答し、待った 2 本は約 23〜26 秒、ほかは約 13 秒で返った | ✅ |
 | 7 | データの除外 | `data/` と `.env` は `git status` に出ず、除外されている | ✅ |
-| 8 | ngrok | chat ホストで確認する | 未実施 |
+| 8 | Web 検索 | モデルが `search_web` と `fetch_url` を呼び、出典付きで答えた（約 28 秒） | ✅ |
+| 9 | ngrok | chat ホストで確認する | 未実施 |
 
 同時実行数の検証では、spark1 の `/metrics` を 1 秒ごとに読んだ。
 
@@ -70,5 +106,5 @@ vllm:num_requests_running=2.0  vllm:num_requests_waiting=0.0   ← 待ってい�
 ## 初回起動時の通信
 
 Open WebUI は初回起動時に、文書検索用の埋め込みモデル（`sentence-transformers/all-MiniLM-L6-v2`）を Hugging Face から取得する。
-chat ホストは、初回だけインターネットに出られる必要がある。
+Web 検索を使うので、chat ホストはインターネットに出られる必要がある。
 取得したモデルは `data/cache/` に保存され、2 回目以降は使い回す。
