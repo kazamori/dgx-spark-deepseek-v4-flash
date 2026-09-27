@@ -23,8 +23,22 @@
     {
       "id": "client",
       "type": "external",
-      "label": "デスクトップ",
-      "sublabel": "curl / OpenCode",
+      "label": "利用者のブラウザ",
+      "sublabel": "社内 LAN / 社外（ngrok）",
+      "pos": [
+        30,
+        470
+      ],
+      "size": [
+        150,
+        60
+      ]
+    },
+    {
+      "id": "owui",
+      "type": "frontend",
+      "label": "Open WebUI",
+      "sublabel": "認証 / 履歴（SQLite）",
       "pos": [
         30,
         300
@@ -165,9 +179,9 @@
   "boundaries": [
     {
       "kind": "security-group",
-      "label": "社内 LAN（Wi-Fi 192.168.160.x）",
+      "label": "chat ホスト（社内 LAN）",
       "wraps": [
-        "client"
+        "owui"
       ]
     },
     {
@@ -192,15 +206,18 @@
   ],
   "connections": [
     {
-      "id": "client-api",
+      "id": "client-owui",
       "from": "client",
+      "to": "owui",
+      "label": "HTTPS（ngrok）/ HTTP",
+      "variant": "emphasis"
+    },
+    {
+      "id": "owui-api",
+      "from": "owui",
       "to": "api",
-      "label": "HTTP :8888 認証なし",
-      "variant": "emphasis",
-      "labelAt": [
-        215,
-        374
-      ]
+      "label": "HTTP :8888",
+      "variant": "emphasis"
     },
     {
       "id": "api-engine",
@@ -278,8 +295,8 @@
       "dot": "cyan",
       "title": "推論 API",
       "items": [
-        "社内 LAN から http://192.168.160.37:8888 に直接アクセスする",
-        "VLLM_HOST=0.0.0.0 で待ち受け、API キーは未設定"
+        "利用者は Open WebUI にログインして使う。社外からは ngrok 経由",
+        "Open WebUI が spark1 の :8888（認証なし）に接続する"
       ]
     },
     {

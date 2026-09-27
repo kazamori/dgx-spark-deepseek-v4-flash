@@ -1,0 +1,10 @@
+# ngrok の Traffic Policy の例。Open WebUI のログインの前に Basic 認証をかける。
+# cp ngrok-policy.example.yaml ngrok-policy.yaml して、認証情報を書き換える。
+# ngrok-policy.yaml は認証情報を含むのでコミットしない。
+on_http_request:
+  - actions:
+      - type: basic-auth
+        config:
+          realm: open-webui
+          credentials:
+            - "USERNAME:PASSWORD"

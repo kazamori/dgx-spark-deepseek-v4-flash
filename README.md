@@ -43,8 +43,9 @@ HTML 版は GitHub 上では表示されないので、ダウンロードして�
 4. [LLM の構築](docs/04-llm-deploy.md)：レシピの clone、`.env.dspark`、イメージ、重み、起動、動作確認
 5. [運用](docs/05-operations.md)：起動と停止、状態確認、電源の切り方、API のエンドポイント
 6. [トラブルシューティング](docs/06-troubleshooting.md)：構築中に起きた問題と対処
+7. [チャット UI（Open WebUI）](docs/07-chat-ui.md)：複数人で使うチャット UI、同時実行数の制限、検証結果
 
-設定ファイルは [configs/](configs/) にある。
+設定ファイルは [configs/](configs/) に、チャット UI の設定は [app/open-webui/](app/open-webui/) にある。
 
 ## 表記
 
@@ -63,6 +64,7 @@ HTML 版は GitHub 上では表示されないので、ダウンロードして�
 - [ ] 管理用 IF を Wi-Fi から有線（`enP7s7`）に切り替える
 - [ ] スループットを計測する（1 ストリームと並列 6）
 - [ ] コーディングエージェント（OpenCode）から接続する
+- [ ] チャット UI（Open WebUI）を chat ホストで動かし、ngrok 経由の利用を確認する
 - [ ] 重みのライセンス条項を原文で確認する
 
 ## 謝辞
