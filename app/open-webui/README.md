@@ -77,6 +77,9 @@ ngrok で公開する前に、管理者アカウントを作っておく。
 初回起動後は、管理画面（Admin Panel の Settings、Web Search）で変更する。
 API キーは `.env` か管理画面にだけ置き、リポジトリには書かない。
 
+新しい会話で Web 検索を最初からオンにする設定は `DEFAULT_MODEL_METADATA` で行っている。
+初回起動後は、管理画面（Admin Panel の Settings、Models の既定値）で変更する。
+
 ## 停止と再起動
 
 ```bash

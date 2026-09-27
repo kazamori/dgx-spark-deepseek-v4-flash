@@ -325,7 +325,8 @@ real    0m23.210s
 
 ### リクエストが処理される流れ
 
-別のマシンから `POST /v1/chat/completions` を送ったときの流れを図に示す。
+別のマシンから `POST /v1/chat/completions` を直接送ったときの流れを図に示す。
+チャット UI（Open WebUI）を使う場合は、図のクライアントの位置に Open WebUI が入り、利用者のブラウザからのリクエストを Open WebUI が spark1 に送る（「[チャット UI（Open WebUI）](07-chat-ui.md)」を参照）。
 プロセス名は起動ログに出る名前である。
 
 ![API リクエストの流れ図](../diagrams/api-request-flow.png)

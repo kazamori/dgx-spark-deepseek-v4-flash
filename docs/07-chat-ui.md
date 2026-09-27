@@ -17,6 +17,9 @@ spark1 の統合メモリは大半を vLLM が使っているためである。
 
 ![システム構成図](../diagrams/system-architecture.png)
 
+利用者のリクエストは、ブラウザから Open WebUI を経由して spark1 の API に届く。
+Open WebUI から先の処理の流れは、「[LLM の構築](04-llm-deploy.md#リクエストが処理される流れ)」の流れ図と同じである。
+
 ## 同時実行数の制限
 
 vLLM は、同時に処理するリクエストを `--max-num-seqs`（レシピの既定は 6）までに制限する。
@@ -47,8 +50,11 @@ Open WebUI は、会話のたびにタイトルやタグなどを LLM で生成�
 | `WEB_SEARCH_ENGINE` | `duckduckgo` | API キーが要らない |
 | `WEB_SEARCH_RESULT_COUNT` | `3` | 入力トークンを増やしすぎない |
 | `BYPASS_WEB_SEARCH_WEB_LOADER` | `true` | 検索結果のページを取得せず、要約文だけを使う（下の測定結果を参照） |
+| `DEFAULT_MODEL_METADATA` | `defaultFeatureIds` に `web_search` | 新しい会話で Web 検索を最初からオンにする |
 
-利用者が入力欄で Web 検索をオンにすると、モデルに検索ツール（`search_web`）とページ取得ツール（`fetch_url`）が渡される。
+新しい会話では、Web 検索が最初からオンになっている（`DEFAULT_MODEL_METADATA` の `defaultFeatureIds` に `web_search` を指定）。
+利用者は会話ごとに入力欄のメニューからオフにできる。
+Web 検索がオンのとき、モデルに検索ツール（`search_web`）とページ取得ツール（`fetch_url`）が渡される。
 Open WebUI `v0.11.4` の既定（ネイティブのツール呼び出し）では、検索するか、どのページを読むかをモデル自身が判断する。
 spark1 の vLLM はツール呼び出しを有効にして起動しているので（`--enable-auto-tool-choice --tool-call-parser deepseek_v4`）、この方式がそのまま動く。
 
@@ -83,7 +89,7 @@ Open WebUI `v0.11.4` を、chat ホストで動かす前に作業用のマシン
 
 | # | 検証項目 | 結果 | 判定 |
 |---|---|---|---|
-| 1 | 接続 | モデル一覧に `deepseek-v4-flash-vision-exp` が出る。「日本の首都を一語で答えて」に「東京」と返り、思考の内容は `reasoning` に分かれて返る | ✅ |
+| 1 | 接続 | モデル一覧に `deepseek-v4-flash-vision-exp` が出る。「日本の首都を一語で答えて」に「東京」と返り、思考の内容は `reasoning` に分かれて返る。ブラウザでも、思考の内容は回答と分けて表示される | ✅ |
 | 2 | アカウント | 最初のアカウントが管理者になる。2 つ目の自己登録は拒否される。管理者から一般ユーザーを追加できる | ✅ |
 | 3 | モデルの公開 | `BYPASS_MODEL_ACCESS_CONTROL` がないと、一般ユーザーには `Model not found` になる。設定後は使える | ✅ |
 | 4 | 履歴の分離 | ユーザー 1 の会話は、ユーザー 2 の一覧に出ない | ✅ |
@@ -101,7 +107,6 @@ vllm:num_requests_running=4.0  vllm:num_requests_waiting=0.0   ← 最初の 6 �
 vllm:num_requests_running=2.0  vllm:num_requests_waiting=0.0   ← 待っていた 2 本を処理中
 ```
 
-ブラウザで思考の内容が回答と分けて表示されるかは、画面で確認する `[要検証]`。
 
 ## 初回起動時の通信
 
